@@ -1,0 +1,13 @@
+# config/config.yaml – default hyper-parameters for the toy run
+model:
+  shared_steps: 16
+  dim: 64
+  learn_taps: true
+  consistency_coef: 1.0
+training:
+  epochs: 1
+  batch_size: 128
+  lr: 0.003
+  seed: 42
+evaluation:
+  episodes: 100
