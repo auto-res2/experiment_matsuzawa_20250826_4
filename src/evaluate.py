@@ -5,6 +5,7 @@ Called by src.main after training is complete.
 from __future__ import annotations
 
 import pathlib
+from types import SimpleNamespace
 from typing import Tuple
 
 import matplotlib.pyplot as plt
@@ -15,15 +16,15 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 # relative import – keeps the package boundaries clean
-from .train import _build_model  # noqa: F401  (model builder)
+from .train import _build_model  # noqa: F401 (model builder)
 
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration1" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration2" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
-    """Return top-1 accuracy; generates confusion matrix PDF."""
+    """Return top-1 accuracy; also generates a confusion-matrix PDF."""
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     tf_val = transforms.Compose([transforms.ToTensor()])
@@ -31,8 +32,11 @@ def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
     loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=4)
 
     checkpoint = torch.load(ckpt_path, map_location=device)
-    cfg_dict = checkpoint.get("cfg", {})
-    model = _build_model(cfg_dict, num_classes=val_set.num_classes).to(device)
+    cfg_raw = checkpoint.get("cfg", {})
+    # cfg was stored as a dict – wrap it for attribute-style access expected by _build_model
+    cfg = cfg_raw if isinstance(cfg_raw, SimpleNamespace) else SimpleNamespace(**cfg_raw)
+
+    model = _build_model(cfg, num_classes=val_set.num_classes).to(device)
     model.load_state_dict(checkpoint["state_dict"], strict=False)
 
     model.eval(); preds, gts = [], []

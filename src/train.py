@@ -1,7 +1,7 @@
 """src/train.py
 Training routine for the FlashScan-2D experiments.
 The script is *never* executed directly – it is imported by src.main so please
-keep side–effects to a minimum.
+keep side-effects to a minimum.
 """
 from __future__ import annotations
 
@@ -27,24 +27,22 @@ try:
 except (ImportError, AttributeError):
     FLASH_OK = False
 
-import timm  # timm has a tiny memory footprint and many models ready-made
-
+import timm  # tiny memory footprint + many models ready-made
 
 # ---------------------------------------------------------------------------
-# I/O utils
+# I/O utils – save **everything** below .research/iteration2/images
 # ---------------------------------------------------------------------------
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration1" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration2" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_DIR = PROJECT_ROOT / "models"
 MODEL_DIR.mkdir(exist_ok=True)
-
 
 # ---------------------------------------------------------------------------
 # Public training API
 # ---------------------------------------------------------------------------
 
-def train(cfg_path: pathlib.Path | str = "config/flashscan_cifar.yaml") -> pathlib.Path:
+def train(cfg_path: pathlib.Path | str = "config/config.yaml") -> pathlib.Path:
     """Main entry called by src.main.  Returns the checkpoint path."""
     cfg = _load_cfg(cfg_path)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -88,7 +86,6 @@ def train(cfg_path: pathlib.Path | str = "config/flashscan_cifar.yaml") -> pathl
 
     print(f"[TRAIN] Finished – best accuracy {best_acc*100:.2f}%  |  model saved → {ckpt_path}")
     return ckpt_path
-
 
 # ---------------------------------------------------------------------------
 # Internals

@@ -19,7 +19,7 @@ PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 def _parse_args():
     p = argparse.ArgumentParser(description="FlashScan-2D CIFAR-10 demo pipeline")
-    p.add_argument("--cfg", default="config/flashscan_cifar.yaml", help="Path to YAML config file")
+    p.add_argument("--cfg", default="config/config.yaml", help="Path to YAML config file")
     p.add_argument("--skip-train", action="store_true", help="Only run evaluation – expects existing model")
     return p.parse_args()
 
