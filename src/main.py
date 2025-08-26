@@ -6,9 +6,30 @@ from .train import train
 from .evaluate import evaluate
 
 
-def load_cfg(cfg_path: str):
-    dflt_path = Path("config/default.yaml")
-    path = Path(cfg_path) if cfg_path else dflt_path
+def _resolve_default_cfg() -> Path:
+    """Return the first existing default-config path.
+
+    This utility tries a handful of sensible locations so that users do not
+    have to specify --config explicitly as long as one of the default files is
+    present in the repository.
+    """
+    candidate_paths = [
+        Path("config/default.yaml"),
+        Path("config/config.yaml"),  # fallback (historical name)
+    ]
+    for p in candidate_paths:
+        if p.exists():
+            return p
+    raise FileNotFoundError("No default configuration file found. Looked for: " + ", ".join(str(p) for p in candidate_paths))
+
+
+def load_cfg(cfg_path: str | None):
+    if cfg_path is None:
+        path = _resolve_default_cfg()
+    else:
+        path = Path(cfg_path)
+        if not path.exists():
+            raise FileNotFoundError(f"The configuration file '{cfg_path}' does not exist.")
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
