@@ -6,5 +6,82 @@
     "memory efficient SSM",
     "low memory vision model",
     "flash attention Mamba"
+  ],
+  "research_study_list": [
+    {
+      "title": "Vision Mamba Mender"
+    },
+    {
+      "title": "VMamba: Visual State Space Model"
+    },
+    {
+      "title": "Multi-Scale VMamba: Hierarchy in Hierarchy Visual State Space Model"
+    },
+    {
+      "title": "Vision Mamba: Efficient Visual Representation Learning with Bidirectional State Space Model"
+    },
+    {
+      "title": "Meteor: Mamba-based Traversal of Rationale for Large Language and Vision Models"
+    },
+    {
+      "title": "Vision Mamba Mender"
+    },
+    {
+      "title": "VMamba: Visual State Space Model"
+    },
+    {
+      "title": "Decision Mamba: Reinforcement Learning via Hybrid Selective Sequence Modeling"
+    },
+    {
+      "title": "Is Mamba Compatible with Trajectory Optimization in Offline Reinforcement Learning?"
+    },
+    {
+      "title": "The Mamba in the Llama: Distilling and Accelerating Hybrid Models"
+    },
+    {
+      "title": "The Expressive Capacity of State Space Models: A Formal Language Perspective"
+    },
+    {
+      "title": "StableSSM: Alleviating the Curse of Memory in State-space Models through Stable Reparameterization"
+    },
+    {
+      "title": "Hungry Hungry Hippos: Towards Language Modeling with State Space Models"
+    },
+    {
+      "title": "Hungry Hungry Hippos: Towards Language Modeling with State Space Models"
+    },
+    {
+      "title": "Transformers to SSMs: Distilling Quadratic Knowledge to Subquadratic Models"
+    },
+    {
+      "title": "Data-efficient Large Vision Models through Sequential Autoregression"
+    },
+    {
+      "title": "Memory-efficient Patch-based Inference for Tiny Deep Learning"
+    },
+    {
+      "title": "Sequential Modeling Enables Scalable Learning for Large Vision Models"
+    },
+    {
+      "title": "Low-Resource Vision Challenges for Foundation Models"
+    },
+    {
+      "title": "MA-LMM: Memory-Augmented Large Multimodal Model for Long-Term Video Understanding"
+    },
+    {
+      "title": "Demystify Mamba in Vision: A Linear Attention Perspective"
+    },
+    {
+      "title": "Vision Mamba Mender"
+    },
+    {
+      "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness"
+    },
+    {
+      "title": "Transformer Quality in Linear Time"
+    },
+    {
+      "title": "Transformer Quality in Linear Time"
+    }
   ]
 }
