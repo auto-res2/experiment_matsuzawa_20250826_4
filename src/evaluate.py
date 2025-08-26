@@ -19,7 +19,7 @@ from torchvision import datasets, transforms
 from .train import _build_model  # noqa: F401 (model builder)
 
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration2" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration3" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -36,7 +36,8 @@ def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
     # cfg was stored as a dict – wrap it for attribute-style access expected by _build_model
     cfg = cfg_raw if isinstance(cfg_raw, SimpleNamespace) else SimpleNamespace(**cfg_raw)
 
-    model = _build_model(cfg, num_classes=val_set.num_classes).to(device)
+    num_classes = len(getattr(val_set, "classes", [])) or 10
+    model = _build_model(cfg, num_classes=num_classes).to(device)
     model.load_state_dict(checkpoint["state_dict"], strict=False)
 
     model.eval(); preds, gts = [], []

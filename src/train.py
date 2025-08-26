@@ -30,10 +30,10 @@ except (ImportError, AttributeError):
 import timm  # tiny memory footprint + many models ready-made
 
 # ---------------------------------------------------------------------------
-# I/O utils – save **everything** below .research/iteration2/images
+# I/O utils – save **everything** below .research/iteration3/images
 # ---------------------------------------------------------------------------
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration2" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration3" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_DIR = PROJECT_ROOT / "models"
 MODEL_DIR.mkdir(exist_ok=True)
@@ -50,8 +50,11 @@ def train(cfg_path: pathlib.Path | str = "config/config.yaml") -> pathlib.Path:
     # 1) Data ----------------------------------------------------------------
     train_loader, val_loader = _build_dataloaders(cfg)
 
+    # Derive the number of classes from the dataset (works for CIFAR-10 & friends)
+    num_classes = len(getattr(train_loader.dataset, "classes", [])) or 10  # fallback to 10
+
     # 2) Model ---------------------------------------------------------------
-    model = _build_model(cfg, train_loader.dataset.num_classes).to(device)
+    model = _build_model(cfg, num_classes).to(device)
 
     # 3) Optimiser / AMP -----------------------------------------------------
     opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)

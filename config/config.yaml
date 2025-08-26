@@ -1,6 +1,0 @@
-# config/config.yaml
-batch_size: 128
-epochs: 10
-lr: 3.0e-4
-weight_decay: 5.0e-2
-recompute: true
