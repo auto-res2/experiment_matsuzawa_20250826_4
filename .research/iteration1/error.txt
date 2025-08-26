@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/experiment_matsuzawa_20250826_4/experiment_matsuzawa_20250826_4/src/main.py", line 27, in <module>
+    main()
+  File "/home/runner/work/experiment_matsuzawa_20250826_4/experiment_matsuzawa_20250826_4/src/main.py", line 21, in main
+    cfg = load_cfg(args.config)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/experiment_matsuzawa_20250826_4/experiment_matsuzawa_20250826_4/src/main.py", line 12, in load_cfg
+    with open(path, "r") as f:
+         ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'config/default.yaml'
