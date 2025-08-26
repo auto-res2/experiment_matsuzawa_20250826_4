@@ -1,6 +1,0 @@
-train:
-  epochs: 1
-  batch_size: 32
-  lr: 0.001
-  k: 256
-  buffer_size_kb: 5000

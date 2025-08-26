@@ -20,7 +20,10 @@ def _resolve_default_cfg() -> Path:
     for p in candidate_paths:
         if p.exists():
             return p
-    raise FileNotFoundError("No default configuration file found. Looked for: " + ", ".join(str(p) for p in candidate_paths))
+    raise FileNotFoundError(
+        "No default configuration file found. Looked for: "
+        + ", ".join(str(p) for p in candidate_paths)
+    )
 
 
 def load_cfg(cfg_path: str | None):

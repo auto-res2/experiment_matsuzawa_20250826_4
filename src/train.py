@@ -170,17 +170,16 @@ def train(cfg: Dict[str, Any]):
                 print(f"Epoch {ep+1}  Iter {it:04d}  Loss {loss.item():.3f}  Buffer {buffer.ram} kB")
 
     # -------------------------------------------------------------------
-    # Save training-loss curve (PDF)
+    # Save training-loss curve
     # -------------------------------------------------------------------
     import matplotlib.pyplot as plt
-    import seaborn as sns
 
     # Save all images into the required directory
-    img_dir = Path(".research/iteration2/images")
+    img_dir = Path(".research/iteration3/images")
     img_dir.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(6, 3))
-    sns.lineplot(x=range(len(loss_history)), y=loss_history)
+    plt.plot(loss_history)
     plt.xlabel("Step"); plt.ylabel("CE-Loss")
     plt.title("SketchReplay++ – training loss")
     plt.tight_layout()
