@@ -25,7 +25,9 @@ def main():
     args = parser.parse_args()
 
     cfg = load_cfg(args.cfg)
-    os.makedirs(".research/iteration1/images", exist_ok=True)
+
+    # Ensure the image output directory exists (new requirement)
+    os.makedirs(".research/iteration2/images", exist_ok=True)
 
     # 1) (optional) preprocessing stage
     run_preprocessing(cfg)
