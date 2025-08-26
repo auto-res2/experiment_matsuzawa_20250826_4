@@ -5,10 +5,11 @@ keep side-effects to a minimum.
 """
 from __future__ import annotations
 
-import pathlib, time, yaml
+import pathlib, time, yaml, random, os
 from types import SimpleNamespace
 from typing import Tuple
 
+import numpy as np
 import torch
 from torch import nn
 from torch.cuda.amp import GradScaler, autocast
@@ -30,10 +31,10 @@ except (ImportError, AttributeError):
 import timm  # tiny memory footprint + many models ready-made
 
 # ---------------------------------------------------------------------------
-# I/O utils – save **everything** below .research/iteration3/images
+# I/O utils – save **everything** below .research/iteration4/images
 # ---------------------------------------------------------------------------
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration3" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration4" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_DIR = PROJECT_ROOT / "models"
 MODEL_DIR.mkdir(exist_ok=True)
@@ -114,15 +115,16 @@ def _build_dataloaders(cfg) -> Tuple[DataLoader, DataLoader]:
     train_set = datasets.CIFAR10(root, train=True, download=True, transform=tf_train)
     val_set = datasets.CIFAR10(root, train=False, download=True, transform=tf_val)
 
-    train_loader = DataLoader(train_set, batch_size=cfg.batch_size, shuffle=True, num_workers=4, pin_memory=True)
-    val_loader = DataLoader(val_set, batch_size=cfg.batch_size * 2, shuffle=False, num_workers=4, pin_memory=True)
+    nw = getattr(cfg, "num_workers", 0)  # safer default inside containers
+    train_loader = DataLoader(train_set, batch_size=cfg.batch_size, shuffle=True, num_workers=nw, pin_memory=True)
+    val_loader = DataLoader(val_set, batch_size=cfg.batch_size * 2, shuffle=False, num_workers=nw, pin_memory=True)
     return train_loader, val_loader
 
 
 def _build_model(cfg, num_classes: int):
     if FLASH_OK:
         base = timm.create_model("vmamba_small", pretrained=False, num_classes=num_classes)
-        model = FlashVSS.from_vmamba(base, scan_version="flash2d", recompute=cfg.recompute)
+        model = FlashVSS.from_vmamba(base, scan_version="flash2d", recompute=getattr(cfg, "recompute", False))
     else:
         model = timm.create_model("resnet18", pretrained=False, num_classes=num_classes)
     return model

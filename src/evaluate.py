@@ -19,7 +19,7 @@ from torchvision import datasets, transforms
 from .train import _build_model  # noqa: F401 (model builder)
 
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration3" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration4" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -29,7 +29,7 @@ def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
 
     tf_val = transforms.Compose([transforms.ToTensor()])
     val_set = datasets.CIFAR10("data/cifar10", train=False, download=True, transform=tf_val)
-    loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=4)
+    loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, num_workers=0)
 
     checkpoint = torch.load(ckpt_path, map_location=device)
     cfg_raw = checkpoint.get("cfg", {})
@@ -53,7 +53,7 @@ def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
     # Confusion matrix -------------------------------------------------------
     cm = confusion_matrix(gts, preds)
     plt.figure(figsize=(6, 5))
-    sns.heatmap(cm, cmap="Blues", square=True, cbar=False)
+    sns.heatmap(cm, cmap="Blues", square=True, cbar=False, annot=True, fmt="d")
     plt.title("CIFAR-10 confusion matrix")
     plt.xlabel("Predicted")
     plt.ylabel("True")

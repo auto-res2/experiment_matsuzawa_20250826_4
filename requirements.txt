@@ -1,0 +1,12 @@
+# Core ML stack
+torch
+torchvision
+timm
+
+# Metrics & visualisation
+matplotlib
+seaborn
+scikit-learn
+
+# Utilities
+pyyaml

@@ -1,0 +1,9 @@
+# config/config.yaml
+# Minimal configuration to get the experiment running quickly on a CPU / GPU-limited env.
+# Tune as needed.
+lr: 0.001
+weight_decay: 0.0001
+batch_size: 64
+epochs: 1            # keep tiny for test-time constraints
+recompute: false
+num_workers: 0
