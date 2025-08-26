@@ -1,0 +1,9 @@
+# You can override any of the default values declared in src/main.py
+# by uncommenting and specifying them here.  Leaving the file empty is
+# perfectly fine because the code fills in sensible defaults.
+
+model:
+  dim: 64
+training:
+  epochs: 5
+  batch_size: 128

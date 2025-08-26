@@ -167,6 +167,7 @@ class RPHDiff(nn.Module):
 #  training routine
 # ------------------------------------------------------------
 
+
 def train_rphdiff(cfg: Dict[str, Any]):
     """Train RPH-Diff according to the provided configuration."""
     # Handle seed – fall back to 42 when not explicitly given
@@ -195,7 +196,7 @@ def train_rphdiff(cfg: Dict[str, Any]):
     # --------------------------------------------------------
     #  save training curve (ensure new directory requirement)
     # --------------------------------------------------------
-    img_dir = os.path.join(".research", "iteration2", "images")
+    img_dir = os.path.join(".research", "iteration3", "images")
     os.makedirs(img_dir, exist_ok=True)
     try:
         import matplotlib

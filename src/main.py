@@ -15,8 +15,41 @@ from .evaluate import evaluate_policy
 
 
 def load_cfg(path: str) -> dict:
+    """Load YAML config; fall back to default values when the file is empty."""
+    if not os.path.isfile(path) or os.path.getsize(path) == 0:
+        return DEFAULT_CFG.copy()
     with open(path, "r") as f:
-        return yaml.safe_load(f)
+        cfg = yaml.safe_load(f) or {}
+    # Merge with defaults so that missing keys are silently filled in.
+    merged = DEFAULT_CFG.copy()
+    for k, v in cfg.items():
+        if isinstance(v, dict):
+            merged.setdefault(k, {}).update(v)
+        else:
+            merged[k] = v
+    return merged
+
+
+DEFAULT_CFG = {
+    "model": {
+        "shared_steps": 16,
+        "dim": 64,
+        "learn_taps": True,
+        "consistency_coef": 1.0,
+    },
+    "training": {
+        "batch_size": 128,
+        "lr": 5e-4,
+        "epochs": 3,
+        "seed": 42,
+    },
+    "evaluation": {
+        "episodes": 20,
+    },
+    "preprocessing": {
+        "verbose": False,
+    },
+}
 
 
 def main():
@@ -27,7 +60,7 @@ def main():
     cfg = load_cfg(args.cfg)
 
     # Ensure the image output directory exists (new requirement)
-    os.makedirs(".research/iteration2/images", exist_ok=True)
+    os.makedirs(".research/iteration3/images", exist_ok=True)
 
     # 1) (optional) preprocessing stage
     run_preprocessing(cfg)
