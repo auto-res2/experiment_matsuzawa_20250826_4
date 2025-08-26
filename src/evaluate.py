@@ -22,7 +22,7 @@ def evaluate(model: TinyCNN, test_loader: DataLoader) -> float:
 
     # Save a tiny bar plot of accuracy (just for having an image artifact)
     import matplotlib.pyplot as plt
-    img_dir = Path(".research/iteration3/images")
+    img_dir = Path(".research/iteration4/images")
     img_dir.mkdir(parents=True, exist_ok=True)
     plt.figure(figsize=(3, 3))
     plt.bar([0], [acc], width=0.4)

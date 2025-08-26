@@ -2,6 +2,7 @@
 import argparse
 import yaml
 from pathlib import Path
+from typing import Dict, Any
 from .train import train
 from .evaluate import evaluate
 
@@ -26,6 +27,30 @@ def _resolve_default_cfg() -> Path:
     )
 
 
+# ---------------------------------------------------------------------------
+# Configuration loader with sensible defaults
+# ---------------------------------------------------------------------------
+
+_DEFAULT_CFG: Dict[str, Any] = {
+    "train": {
+        "epochs": 1,
+        "batch_size": 32,
+        "lr": 1e-3,
+        "k": 256,
+        "buffer_size_kb": 1024,
+    }
+}
+
+
+def _merge(dst: Dict[str, Any], src: Dict[str, Any]):
+    """Recursively merge keys from src into dst without overwriting existing ones."""
+    for k, v in src.items():
+        if k not in dst:
+            dst[k] = v
+        elif isinstance(v, dict) and isinstance(dst.get(k), dict):
+            _merge(dst[k], v)
+
+
 def load_cfg(cfg_path: str | None):
     if cfg_path is None:
         path = _resolve_default_cfg()
@@ -33,8 +58,18 @@ def load_cfg(cfg_path: str | None):
         path = Path(cfg_path)
         if not path.exists():
             raise FileNotFoundError(f"The configuration file '{cfg_path}' does not exist.")
+
+    # Load YAML (may be empty)
     with open(path, "r") as f:
-        return yaml.safe_load(f)
+        loaded = yaml.safe_load(f) or {}
+
+    if not isinstance(loaded, dict):
+        raise ValueError("Configuration file must define a YAML mapping (dictionary).")
+
+    # Merge with defaults so that all required keys exist.
+    _merge(loaded, _DEFAULT_CFG)
+
+    return loaded
 
 
 def main():

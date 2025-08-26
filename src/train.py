@@ -175,7 +175,7 @@ def train(cfg: Dict[str, Any]):
     import matplotlib.pyplot as plt
 
     # Save all images into the required directory
-    img_dir = Path(".research/iteration3/images")
+    img_dir = Path(".research/iteration4/images")
     img_dir.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(6, 3))
