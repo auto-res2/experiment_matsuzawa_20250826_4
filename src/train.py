@@ -31,10 +31,10 @@ except (ImportError, AttributeError):
 import timm  # tiny memory footprint + many models ready-made
 
 # ---------------------------------------------------------------------------
-# I/O utils – save **everything** below .research/iteration4/images
+# I/O utils – save **everything** below .research/iteration5/images
 # ---------------------------------------------------------------------------
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration4" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration5" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_DIR = PROJECT_ROOT / "models"
 MODEL_DIR.mkdir(exist_ok=True)
@@ -65,7 +65,8 @@ def train(cfg_path: pathlib.Path | str = "config/config.yaml") -> pathlib.Path:
     # 4) Training loop -------------------------------------------------------
     best_acc, ckpt_path = 0.0, MODEL_DIR / "flashscan_cifar.pt"
     for epoch in range(1, cfg.epochs + 1):
-        model.train(); epoch_loss, n, t0 = 0.0, 0, time.time()
+        model.train()
+        epoch_loss, n, t0 = 0.0, 0, time.time()
         for imgs, labels in train_loader:
             imgs, labels = imgs.to(device), labels.to(device)
             opt.zero_grad(set_to_none=True)
@@ -77,8 +78,10 @@ def train(cfg_path: pathlib.Path | str = "config/config.yaml") -> pathlib.Path:
                 scaler.step(opt)
                 scaler.update()
             else:
-                loss.backward(); opt.step()
-            epoch_loss += loss.item() * labels.size(0); n += labels.size(0)
+                loss.backward()
+                opt.step()
+            epoch_loss += loss.item() * labels.size(0)
+            n += labels.size(0)
         epoch_loss /= n
 
         # 5) Validation ------------------------------------------------------
@@ -131,7 +134,8 @@ def _build_model(cfg, num_classes: int):
 
 
 def _validate(model: nn.Module, loader: DataLoader, device: torch.device) -> float:
-    model.eval(); correct = 0
+    model.eval()
+    correct = 0
     with torch.no_grad():
         for imgs, labels in loader:
             logits = model(imgs.to(device))

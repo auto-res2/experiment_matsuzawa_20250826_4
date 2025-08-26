@@ -19,7 +19,7 @@ from torchvision import datasets, transforms
 from .train import _build_model  # noqa: F401 (model builder)
 
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent.parent
-IMG_DIR = PROJECT_ROOT / ".research" / "iteration4" / "images"
+IMG_DIR = PROJECT_ROOT / ".research" / "iteration5" / "images"
 IMG_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -40,7 +40,8 @@ def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
     model = _build_model(cfg, num_classes=num_classes).to(device)
     model.load_state_dict(checkpoint["state_dict"], strict=False)
 
-    model.eval(); preds, gts = [], []
+    model.eval()
+    preds, gts = [], []
     with torch.no_grad():
         for imgs, labels in loader:
             logits = model(imgs.to(device))
@@ -58,6 +59,7 @@ def evaluate(ckpt_path: pathlib.Path, batch_size: int = 256) -> float:
     plt.xlabel("Predicted")
     plt.ylabel("True")
     pdf_path = IMG_DIR / "confusion_matrix.pdf"
-    plt.tight_layout(); plt.savefig(pdf_path)
+    plt.tight_layout()
+    plt.savefig(pdf_path)
     print(f"[EVAL] confusion matrix saved → {pdf_path.relative_to(PROJECT_ROOT)}")
     return acc
